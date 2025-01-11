@@ -1,0 +1,14 @@
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\bin\Debug\net7.0\Prac2.exe
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\bin\Debug\net7.0\Prac2.deps.json
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\bin\Debug\net7.0\Prac2.runtimeconfig.json
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\bin\Debug\net7.0\Prac2.dll
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\bin\Debug\net7.0\Prac2.pdb
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.AssemblyInfoInputs.cache
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.AssemblyInfo.cs
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.csproj.CoreCompileInputs.cache
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.dll
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\refint\Prac2.dll
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.pdb
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\Prac2.genruntimeconfig.cache
+C:\Users\m_ver\Desktop\CI-PRAC-2\Prac2\Prac2\obj\Debug\net7.0\ref\Prac2.dll

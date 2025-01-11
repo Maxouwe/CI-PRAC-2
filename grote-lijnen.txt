@@ -39,8 +39,6 @@ Classes:
 -Sudokugrid
     -misschien beter niet meer met een subgrid class werken want we gaan nu vooral rij voor rij af
     -bevat een twee dimensionale array van vakjes (op rij basis)
-    -bevat een array van subgrids waarbij elke subgrid: een 1-dimensionale array van 9 vakjes (want de interne subgrid coordinaten zijn niet meer belangrijk volgens mij)
-    -de vakjes in de subgrid en rijen moeten naar dezelfde vak-objecten verwijzen
     -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde rij teruggeven
     -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde kolom teruggeven 
     -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde subgrid teruggeven

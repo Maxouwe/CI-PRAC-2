@@ -9,7 +9,8 @@ namespace Prac2
     internal class Vakje
     {
         public readonly bool fixed_;
-        public int value;
+        public int val;
+
         //if bool[i] = true then i + 1 is in the domain
         public bool[] domain;
         //(row index, column index)
@@ -18,7 +19,7 @@ namespace Prac2
         public Vakje(bool isFixed, int val, (int, int) coords)
         {
             fixed_ = isFixed;
-            value = val;
+            this.val = val;
             coordinates = coords;
 
             domain = new bool[9];
