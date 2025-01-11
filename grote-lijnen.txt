@@ -1,0 +1,63 @@
+Chronological backtracking:
+-vul een vak in (probeer in volgorde 1,2..,8,9)
+-check of dit voldoet aan alle constraints
+-ga naar het volgende vakje (van links naar rechts en van boven naar beneden dat is dus rij voor rij)
+-doe weer hetzelfde
+-is er een constraint violation probeer de volgende waarde (het is depth first)
+-is er weer een constraint violation en het huidige vakje heeft geen mogelijk waarden meer (waarde 9 leidde tot een constrain violation)
+    Dan betekent dat we moeten backtracken ga terug tot je een parent vindt die nog wel waarde toekenningen over heeft
+-Ga door tot je een oplossing hebt
+-Volgens de opdracht beschrijven hoeven we hier geen consistentie onderhoud te doen(volgens mij)
+
+Forward Checking:
+-Na invullen van gefixeerde vakken Maak het probleem eerst knoop consistent
+    Dat betekent voor elk niet gefixeerd vakje: verwijder alle onmogelijke waarden uit zijn domein
+-Vul vakjes in in dezelfde volgorde als bij chronological backtracking
+-Na elke invulling worden de domeinen van de vakjes aangepast
+    Dus wanneer je een vakje wilt invullen
+    Kijk je naar de waarden in het domein van dat vakje (wel nog steeds in oplopende volgorde)
+-Na elke invulling van Vi(een vakje) worden alle andere Vj's(andere vakjes indezelfde rij, kolom en subgrid) consistent gemaakt met Vi
+    Dat betekent pas de domeinen van Vj aan' (hier zijn i en j niet gerelateerd aan de sudoku coordinaten)
+-in het algoritme wordt ook gesproken over constraint sets, maar het is denk ik het beste als we niet expliciet met constraint sets gaan werken
+    Want dat zal voor onnodige overhead en ruimtegebruik zorgen
+
+-FC met MCV:
+-Hetzelfde als forward checking alleen de volgorde waarin je de vakjes invult is anders
+-na elke invulling sorteer domeinen op basis van grootte, het vakje met het kleinste domein wordt als eerste gekozen
+
+Datastructuren:
+Dit is geen local search meer, dus we moeten vorige staten opslaan in een zoekboom, want we moeten kunnen backtracken als blijkt dat een branch niet
+tot een oplossing leidt. De vraag is of we in elke node alles opslaan of dat we  alleen de veranderingen(t.o.v. de parent) opslaan (als dat mogelijk is).
+
+Classes:
+-Vakje:
+    -bool gefixeerd of niet
+    -ingevulde waarde (0 t/m 9, 0 = leeg)
+    -Domein = set van mogelijke waarden
+    -coordinaten (i = rij-index, j = kolom-index)
+
+-Sudokugrid
+    -misschien beter niet meer met een subgrid class werken want we gaan nu vooral rij voor rij af
+    -bevat een twee dimensionale array van vakjes (op rij basis)
+    -bevat een array van subgrids waarbij elke subgrid: een 1-dimensionale array van 9 vakjes (want de interne subgrid coordinaten zijn niet meer belangrijk volgens mij)
+    -de vakjes in de subgrid en rijen moeten naar dezelfde vak-objecten verwijzen
+    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde rij teruggeven
+    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde kolom teruggeven 
+    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde subgrid teruggeven
+
+-SudokuOperator
+    -Een method die een successor state genereerd, dus een vakje invult en de domeinen aanpast
+    -Een method die alles één stap terugdraait, dus de meeste recente invulling en domeinveranderingen terug draait
+
+De inhoud van de volgende classen moeten nog nader bepaald worden
+-Een class voor het chronological backtracking
+
+-Een class voor het forwardchecking algoritme
+
+-Een class voor het FC-MCV algoritme
+
+
+
+
+
+
