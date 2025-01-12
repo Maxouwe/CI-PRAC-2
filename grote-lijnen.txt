@@ -28,7 +28,8 @@ Forward Checking:
 Datastructuren:
 Voor chronological backtracking en forward checking hoeven niet expliciet een tree datastructure te definieren want 
 we weten dat we alles invullen van links naar rechts en van boven naar beneden. Als we terug naar een parent willen gaan
-hoeven alleen de waarde van het huidige vakje ongedaan te maken en die waarde weer terug toevoegen aan de domeinen van alle Vj's
+hoeven alleen de waarde van het huidige vakje ongedaan te maken en die waarde weer terug toevoegen aan de domeinen van alle Vj's. 
+Voor chronological backtracking hoef je alleen de waarde van het huidige vakje ongedaan te maken want je kijkt niet naar domeinen in dat algoritme.
 Ik heb in de comments van StateOperator.cs hier meer over uitgelegd
 
 Classes:
