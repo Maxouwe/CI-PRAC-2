@@ -73,32 +73,53 @@ namespace Prac2
             return string.Join(" ", res.ToArray());
         }
 
-        //returns the row of Vakje (i.e. all vakjes that are in the same row, including the input vakje)
-        public Vakje[] getRow(Vakje vakje)
+        //helper function for getRCS
+        //fills the input array with all vakjes from the same row as input vakje (excluding input vakje)
+        public void getRow(Vakje vakje, Vakje[] toBeFilled)
         {
-            int rowIndex = vakje.coordinates.Item1;
-            return this.grid[rowIndex];
+            Vakje[] row = this.grid[vakje.coordinates.Item1];
+            int k = 0;
+
+            for (int j = 0; j < 9; j++)
+            {
+                //if its not the same cell
+                if (j != vakje.coordinates.Item2)
+                {
+                    toBeFilled[j - k] = row[j];
+                }
+                else
+                {
+                    k++;
+                }
+            }
         }
 
-        //returns the column of input Vakje (i.e. all vakjes that are in the same row, including the input vakje)
-        public Vakje[] getColumn(Vakje vakje)
-        {
-            Vakje[] result = new Vakje[9];
-            int columnIndex = vakje.coordinates.Item2;
+        //helper function for getRCS
+        //fills the input array with all vakjes from the same column as input vakje (excluding input vakje)
 
+        public void getColumn(Vakje vakje, Vakje[] toBeFilled)
+        {
+            int columnIndex = vakje.coordinates.Item2;
+            int k = 0;
             for(int i = 0; i < 9; i++)
             {
-                result[i] = this.grid[i][columnIndex];
+                //if not the same cell
+                if (i != vakje.coordinates.Item1)
+                {
+                    toBeFilled[i + 8 - k] = this.grid[i][columnIndex];
+                }
+                else
+                {
+                    k++;
+                }
             }
-
-            return result;
         }
 
-        //returns subgrid of input Vakje (i.e. all vakjes that are in the same row, including the input vakje)
-        public Vakje[] getSubgrid(Vakje vakje)
+        //helper function for getRCS
+        //fills the input array with all vakjes from the same subgrid as input vakje (excluding input vakje)
+        public void getSubgrid(Vakje vakje, Vakje[] toBeFilled)
         {
             int k = 0;
-            Vakje[] result = new Vakje[9];
             int startingRow = vakje.coordinates.Item1 / 3 * 3;
             int startingColumn = vakje.coordinates.Item2 / 3 * 3;
 
@@ -106,10 +127,25 @@ namespace Prac2
             {
                 for(int j = startingColumn; j < startingColumn + 3; j++)
                 {
-                    result[k] = this.grid[i][j];
-                    k++;
+                    //no vakjes that have been in getRow and getColumn and also no input vakje itself
+                    if(i != vakje.coordinates.Item1 && j != vakje.coordinates.Item2)
+                    {
+                        toBeFilled[k + 16] = this.grid[i][j];
+                        k++;
+                    }
                 }
             }
+        }
+
+        //gets all vakjes that are in the same row, column and subgrid (RCS = ROW COLUMN SUBGRID)
+        //does not contain duplicate vakjes and does not contain input vakje
+        public Vakje[] getRCS(Vakje vakje)
+        {
+            Vakje[] result = new Vakje[20];
+
+            getRow(vakje, result);
+            getColumn(vakje, result);
+            getSubgrid(vakje, result);
 
             return result;
         }

@@ -26,8 +26,10 @@ Forward Checking:
 -na elke invulling sorteer domeinen op basis van grootte, het vakje met het kleinste domein wordt als eerste gekozen
 
 Datastructuren:
-Dit is geen local search meer, dus we moeten vorige staten opslaan in een zoekboom, want we moeten kunnen backtracken als blijkt dat een branch niet
-tot een oplossing leidt. De vraag is of we in elke node alles opslaan of dat we  alleen de veranderingen(t.o.v. de parent) opslaan (als dat mogelijk is).
+Voor chronological backtracking en forward checking hoeven niet expliciet een tree datastructure te definieren want 
+we weten dat we alles invullen van links naar rechts en van boven naar beneden. Als we terug naar een parent willen gaan
+hoeven alleen de waarde van het huidige vakje ongedaan te maken en die waarde weer terug toevoegen aan de domeinen van alle Vj's
+Ik heb in de comments van StateOperator.cs hier meer over uitgelegd
 
 Classes:
 -Vakje:
@@ -39,9 +41,7 @@ Classes:
 -Sudokugrid
     -misschien beter niet meer met een subgrid class werken want we gaan nu vooral rij voor rij af
     -bevat een twee dimensionale array van vakjes (op rij basis)
-    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde rij teruggeven
-    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde kolom teruggeven 
-    -Een methode die op basis van vak-coordinaten i,j (rij index, kolomindex) alle vakjes uit dezelfde subgrid teruggeven
+    -Een functie die alle vakjes terug geeft die in dezelfde rij, kolom en subgrid bevinden van een bepaald vakje
 
 -SudokuOperator
     -Een method die een successor state genereerd, dus een vakje invult en de domeinen aanpast
