@@ -68,7 +68,7 @@ namespace Prac2
         }
 
         //just go one vakje to the right (i.e. reassign currentVakje)
-        //ofcourse make sure if its not fixed
+        //ofcourse make sure if its not fixed or already filled in
         //after this currentVakje.val = 0
         //call checkNextSibling and goToNextSibling this will start at trying out value = 1
         public void goToFirstChild()
@@ -105,6 +105,10 @@ namespace Prac2
 
         //remove the value of currentVakje
         //add the value of currentVakje back to the domains of all Vj's
+        //we need to undo the latest operation if any of the domains of the empty cells becomes empty
+        //because that means for that empty cell there doesnt exist any value that works
+        //we dont need to check wether we violate any constraints because
+        //every vakje only contains values in their domain which are viable
         public void undoOperator()
         {
 
@@ -119,7 +123,7 @@ namespace Prac2
         }
 
         //just go one vakje to the right (i.e. reassign currentVakje)
-        //ofcourse make sure if its not fixed
+        //ofcourse make sure if its not fixed or already filled in
         //after this currentVakje.val = 0
         //call checkNextSibling and goToNextSibling this will start at trying out value = 1
         public void goToFirstChild()
