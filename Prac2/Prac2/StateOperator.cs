@@ -156,9 +156,9 @@ namespace Prac2
 
         }
 
-        public bool goToFirstChild(SudokuGrid grid)
+        public void goToFirstChild(SudokuGrid grid)
         {
-            throw new NotImplementedException();
+            
         }
 
         //the sorting may be optimized more
