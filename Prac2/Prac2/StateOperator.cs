@@ -131,34 +131,98 @@ namespace Prac2
     //the FC-MCV algorithm needs different operators than forwardchecking and chronological backtracking
     class StateOperatorMCV
     {
+        Vakje currentVakje;
+
         public StateOperatorMCV() { }
 
         
-        public void checkNextSibling()
+        public void checkNextSibling(SudokuGrid grid)
         {
 
         }
 
-        
-        public void goToNextSibling()
+        public void goToNextSibling(SudokuGrid grid)
         {
 
         }
 
-        
-        public void undoOperator()
+        public void undoOperator(SudokuGrid grid)
         {
 
         }
 
-        public void goToParent()
+        public void goToParent(SudokuGrid grid)
         {
 
         }
 
-        public void goToFirstChild()
+        public bool goToFirstChild(SudokuGrid grid)
         {
+            throw new NotImplementedException();
+        }
 
+        //the sorting may be optimized more
+        //instead of counting every domain size every step
+        //we can remember which domains have been changed last and what the size was of them
+        //we can just remember that we just need to increase or decrease their size by 1
+        //(because every step at most only 1 value is added or removed from every domain
+        //finds vakje with smallest domain(most constrained vakje)
+        public Vakje? getSmallestDomain(SudokuGrid grid)
+        {
+            //start with any empty vakje in grid
+            Vakje smallestDomain = findEmptyCell(grid);
+            int smallestDomainSize = domainSize(smallestDomain);
+
+            if(smallestDomain != null)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        int tempDomainSize = domainSize(grid.grid[i][j]);
+                        if(tempDomainSize < smallestDomainSize)
+                        {
+                            smallestDomain = grid.grid[i][j];
+                            smallestDomainSize = tempDomainSize;
+                        }
+                    }
+                }
+                return smallestDomain;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        //returns the first empty cell from top to bottom left to right
+        public Vakje? findEmptyCell(SudokuGrid grid)
+        {
+            for(int i = 0; i < 0; i++)
+            {
+                for(int j=0; j < 9; j++)
+                {
+                    if (grid.grid[i][j].val == 0)
+                    {
+                        return grid.grid[i][j];
+                    }
+                }
+            }
+            return null;
+        }
+
+        //counts the amount of values in the domain of input vakje
+        public int domainSize(Vakje vakje)
+        {
+            int count = 0;
+            for(int i = 0; i < 9; i++)
+            {
+                if (vakje.domain[i])
+                {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 }
