@@ -31,6 +31,7 @@ namespace Prac2
     internal class StateOperatorCB
     {
         Vakje currentVakje;
+        SudokuGrid sg;
 
         public StateOperatorCB() { }
 
@@ -40,23 +41,30 @@ namespace Prac2
         //i thought checking the next sibling first before changing the sudokugrid
         //because im not sure if its safe to change things 
         //and then finding out halfway through that it doesnt work
-        public void checkNextSibling()
+        public bool checkNextSibling()
         {
-
+            currentVakje.val++;
+            Vakje[] vs = sg.getRCS(currentVakje);
+            foreach (Vakje v in vs)
+            {
+                if (currentVakje.val = v.val) return false;
+            }
+            return true;
         }
 
         //go to the next sibling of the current state
         //make sure to first call undoOperator()
         //-fill in the next value for Vi
-        public void goToNextSibling()
+        public void goToNextSibling(int n)
         {
-
+            undoOperator();
+            currentVakje.val += n;
         }
 
         //remove the value of currentVakje
         public void undoOperator()
         {
-
+            currentVakje.val = 0;
         }
 
         //make sure to first call undoOperator()
@@ -64,7 +72,9 @@ namespace Prac2
         //or if there is no to the left, go to the cell that is most right and one row up
         public void goToParent()
         {
-
+            undoOperator();
+            (int,int) parentCoords = previousVakje(currentVakje.coordinates);
+            currentVakje = sg.grid[parentCoords.Item1][parentCoords.Item2];
         }
 
         //just go one vakje to the right (i.e. reassign currentVakje)
@@ -73,7 +83,31 @@ namespace Prac2
         //call checkNextSibling and goToNextSibling this will start at trying out value = 1
         public void goToFirstChild()
         {
+            sg.grid[currentVakje.coordinates.Item1][currentVakje.coordinates.Item2].val = currentVakje.val;
+            (int, int) childCoords = nextVakje(currentVakje.coordinates);
+            currentVakje = sg.grid[childCoords.Item1][childCoords.Item2];
+        }
 
+        private void previousVakje((int,int) xy)
+        {
+            //if previous x is still bigger than zero, return that with the same y value, otherwise 9 and the previous y
+            int x = xy.Item1 - 1 != 0 ? xy.Item1 - 1 : 9;
+            int y = xy.Item1 - 1 != 0 ? xy.Item2 : xy.Item2 - 1;
+            if (!sg.grid[x][y].fixed_)
+                return (x, y);
+            else
+                return previousVakje((x, y));
+        }
+
+        private void nextVakje((int, int) xy)
+        {
+            //if previous x is still bigger than zero, return that with the same y value, otherwise 9 and the previous y
+            int x = xy.Item1 + 1 != 10 ? xy.Item1 + 1 : 1;
+            int y = xy.Item1 + 1 != 10 ? xy.Item2 : xy.Item2 + 1;
+            if (!sg.grid[x][y].fixed_)
+                return (x, y);
+            else
+                return nextVakje((x, y));
         }
     }
 
