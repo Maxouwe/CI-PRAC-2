@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace Prac2
 {
@@ -131,34 +132,129 @@ namespace Prac2
     //the FC-MCV algorithm needs different operators than forwardchecking and chronological backtracking
     class StateOperatorMCV
     {
-        Vakje currentVakje;
+        public Vakje currentVakje;
+        public MCV_Node currentNode;
+        SudokuGrid grid;
 
-        public StateOperatorMCV() { }
+        public StateOperatorMCV(SudokuGrid grd) 
+        {
+            grid = grd;
+        }
 
+        //get a square with the smallest domain
+        public bool setInitialState()
+        {
+            currentVakje = getSmallestDomain();
+            if(currentVakje != null)
+            {
+                currentNode = new MCV_Node(currentVakje);
+
+                return true;
+            }
+
+            //if there are no empty squares
+            return false;
+        }
         
-        public void checkNextSibling(SudokuGrid grid)
+
+        //currentVakje.val = nextValueInDomain
+        //if there is no next value then return false
+        public bool fillInNextValueFromDomain()
         {
-
+            for(int i = currentVakje.val; i < 9; i++)
+            {
+                if (currentVakje.domain[i])
+                {
+                    currentVakje.val = (i+1);
+                    return true;
+                }
+            }
+            return false;
         }
-
-        public void goToNextSibling(SudokuGrid grid)
-        {
-
-        }
-
-        public void undoOperator(SudokuGrid grid)
-        {
-
-        }
-
-        public void goToParent(SudokuGrid grid)
-        {
-
-        }
-
-        public void goToFirstChild(SudokuGrid grid)
+        
+        //consider the latest value x that was added to the grid
+        //add x back to all domains
+        //and remove x from the cell
+        public void emptySquare()
         {
             
+            currentVakje.val = 0;
+        }
+
+
+        //goes on node up, but does not fill in any value
+        public void goToParentState()
+        {
+            currentNode = currentNode.getParent();
+
+            currentNode.deleteChild();
+
+            currentVakje = grid.grid[currentNode.coordinates.Item1][currentNode.coordinates.Item2];
+        }
+
+        //goes to the square with the smallest domain but does not fill in any value yet
+        public bool goToChildState()
+        {
+            Vakje? smallestDomain = getSmallestDomain();
+            if(smallestDomain != null)
+            {
+                currentVakje = smallestDomain;
+                MCV_Node newChild = new MCV_Node(currentVakje);
+
+                currentNode.setChild(newChild);
+                currentNode = newChild;
+                return true;
+            }
+            return false;
+        }
+
+        public void addBackToDomains()
+        {
+            if(currentVakje.val != 0)
+            {
+                Vakje[] RCS = grid.getRCS(currentVakje);
+
+                for (int i = 0; i < 20; i++)
+                {
+                    Vakje tempVakje = RCS[i];
+
+                    //put the value back to the domain of the other empty Vj's
+                    if (!RCS[i].domain[currentVakje.val - 1] && RCS[i].val == 0)
+                    {
+                        RCS[i].domain[currentVakje.val - 1] = true;
+                        RCS[i].domainSize++;
+                    }
+                }
+            }
+        }
+
+        //updates all domains of empty Vj's after filling in Vi
+        //returns false if this leads to an empty domain
+        public bool removeFromDomains()
+        {
+            if(currentVakje.val != 0)
+            {
+                Vakje[] RCS = grid.getRCS(currentVakje);
+
+                for (int i = 0; i < 20; i++)
+                {
+                    Vakje tempVakje = RCS[i];
+                    //remove value of current vakje from the domain of the other vakje if its empty 
+                    if (tempVakje.domain[currentVakje.val - 1] && tempVakje.val == 0)
+                    {
+                        
+                        tempVakje.domain[currentVakje.val - 1] = false;
+                        tempVakje.domainSize--;
+                        //if this leads to an empty domain tell this to the invoker of this function
+                        //so we can backtrack
+                        if (tempVakje.domainSize == 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         //the sorting may be optimized more
@@ -166,12 +262,13 @@ namespace Prac2
         //we can remember which domains have been changed last and what the size was of them
         //we can just remember that we just need to increase or decrease their size by 1
         //(because every step at most only 1 value is added or removed from every domain
-        //finds vakje with smallest domain(most constrained vakje)
-        public Vakje? getSmallestDomain(SudokuGrid grid)
+
+        //finds empty vakje with smallest domain(most constrained vakje)
+        //returns null if it cant find an empty cell
+        private Vakje? getSmallestDomain()
         {
             //start with any empty vakje in grid
-            Vakje smallestDomain = findEmptyCell(grid);
-            int smallestDomainSize = domainSize(smallestDomain);
+            Vakje smallestDomain = findEmptyCell();
 
             if(smallestDomain != null)
             {
@@ -179,11 +276,10 @@ namespace Prac2
                 {
                     for (int j = 0; j < 9; j++)
                     {
-                        int tempDomainSize = domainSize(grid.grid[i][j]);
-                        if(tempDomainSize < smallestDomainSize)
+                        //if we find a vakje with a smaller domain and empty
+                        if(smallestDomain.domainSize < grid.grid[i][j].domainSize && grid.grid[i][j].val == 0)
                         {
                             smallestDomain = grid.grid[i][j];
-                            smallestDomainSize = tempDomainSize;
                         }
                     }
                 }
@@ -196,9 +292,9 @@ namespace Prac2
         }
 
         //returns the first empty cell from top to bottom left to right
-        public Vakje? findEmptyCell(SudokuGrid grid)
+        private Vakje? findEmptyCell()
         {
-            for(int i = 0; i < 0; i++)
+            for(int i = 0; i < 9; i++)
             {
                 for(int j=0; j < 9; j++)
                 {
@@ -211,18 +307,31 @@ namespace Prac2
             return null;
         }
 
-        //counts the amount of values in the domain of input vakje
-        public int domainSize(Vakje vakje)
+        //for each fixed cell Vi remove Value(Vi) from Domain(Vj) With Vj = any square thats affected by Vi's value
+        public void makeNodeConsistent()
         {
-            int count = 0;
+            //for every square
             for(int i = 0; i < 9; i++)
             {
-                if (vakje.domain[i])
+                for(int j = 0; j < 9; j++)
                 {
-                    count++;
+                    //if square Vi is fixed
+                    if (grid.grid[i][j].fixed_)
+                    {
+                        //update the domains of all Vj's
+                        Vakje[] Vjs = grid.getRCS(grid.grid[i][j]);
+                        for(int k = 0; k < 20; k++)
+                        {
+                            if (Vjs[k].domain[grid.grid[i][j].val - 1])
+                            {
+                                Vjs[k].domain[grid.grid[i][j].val - 1] = false;
+                                Vjs[k].domainSize--;
+                            }
+                        }
+                    }
+                    
                 }
             }
-            return count;
         }
     }
 }

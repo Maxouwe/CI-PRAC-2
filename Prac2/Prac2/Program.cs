@@ -7,6 +7,9 @@
             SudokuGrid sud = new SudokuGrid();
             sud.ParseFromString(Console.ReadLine());
             Console.WriteLine(sud.ToString());
+            FC_MCV algoObject = new FC_MCV(sud);
+            algoObject.executeAlgorithm();
+            Console.WriteLine(sud.ToString());
         }
 
 

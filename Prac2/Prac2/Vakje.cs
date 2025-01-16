@@ -13,6 +13,7 @@ namespace Prac2
 
         //if bool[i] = true then i + 1 is in the domain
         public bool[] domain;
+        public int domainSize;
         //(row index, column index)
         public readonly (int, int) coordinates;
 
@@ -27,6 +28,7 @@ namespace Prac2
             {
                 domain[i] = true;
             }
+            domainSize = 9;
         }
     }
 }
