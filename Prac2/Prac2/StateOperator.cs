@@ -219,10 +219,25 @@ namespace Prac2
                     Vakje tempVakje = RCS[i];
 
                     //put the value back to the domain of the other empty Vj's
-                    if (!RCS[i].domain[currentVakje.val - 1] && RCS[i].val == 0)
+                    if (!tempVakje.domain[currentVakje.val - 1] && tempVakje.val == 0)
                     {
-                        RCS[i].domain[currentVakje.val - 1] = true;
-                        RCS[i].domainSize++;
+                        //if the any of the vakjes in the column, row and subgrid of tempVakje contains the currentVakje.val
+                        //then we cant add back that value back to its domain
+                        Vakje[] RCS2 = grid.getRCS(tempVakje);
+                        bool isCausedByCurrentVakje = true;
+                        for(int j = 0; j < 20; j++)
+                        {
+                            if (RCS2[j].val == currentVakje.val && RCS2[j] != currentVakje)
+                            {
+                                isCausedByCurrentVakje = false;
+                                break;
+                            }
+                        }
+                        if (isCausedByCurrentVakje)
+                        {
+                            tempVakje.domain[currentVakje.val - 1] = true;
+                            tempVakje.domainSize++;
+                        }
                     }
                 }
             }
