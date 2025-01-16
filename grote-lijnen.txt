@@ -26,10 +26,15 @@ Forward Checking:
 -na elke invulling sorteer domeinen op basis van grootte, het vakje met het kleinste domein wordt als eerste gekozen
 
 Datastructuren:
-Voor chronological backtracking en forward checking hoeven niet expliciet een tree datastructure te definieren want 
-we weten dat we alles invullen van links naar rechts en van boven naar beneden. Als we terug naar een parent willen gaan
-hoeven alleen de waarde van het huidige vakje ongedaan te maken en die waarde weer terug toevoegen aan de domeinen van alle Vj's. 
-Voor chronological backtracking hoef je alleen de waarde van het huidige vakje ongedaan te maken want je kijkt niet naar domeinen in dat algoritme.
+Voor chronological backtracking hoef je niet expliciet een search tree datastructure te gebruiken want je alles gewoon in van links naar rechts en van boven naar beneden.
+Voor chronological backtracking hoef je alleen de waarde van het huidige vakje ongedaan te maken want je kijkt niet naar domeinen in dat algoritme. Dus je weet van welk vakje
+vandaan komt en welke waarde je daar is uitgeprobeerd.
+
+Voor forward checking kun je een search tree gebruiken, maar het hoeft niet. Stel je zit in Vi en je moet terug, dan moet je de ingevulde waarde van Vi verwijderen.
+Maar je moet ook de domein veranderingen die Vi heeft veroorzaakt weer ongedaan maken. Stel dat er een Vi waarde 3 heeft en het blijkt dat die branch niet werkt. En je wilt terug.
+Dan moet je de waarde 3 weer terug stoppen in de domeinen van alle Vj's. Maar het kan zijn een Vj 3 niet in zn domein heeft vanwege een ander vakje en niet vanwege Vi.
+Dus je kunt niet zomaar aan alle Vj's 3 terug geven. Je kunt dus onthouden welk vakje een bepaalde waarde uit zijn domein heeft verwijderd. Dat kun je in een tree opslaan.
+Maar het hoeft niet. Je kunt ook kijken voor elke Vj of 3 voorkomt in zijn rij, kolom of subgrid. Als dat niet zo is dan mag je 3 weer terug geven aan Vj. 
 Ik heb in de comments van StateOperator.cs hier meer over uitgelegd
 
 Classes:
