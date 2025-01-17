@@ -133,6 +133,7 @@ namespace Prac2
     class StateOperatorMCV
     {
         public Vakje currentVakje;
+        public int previousVal;
         public MCV_Node currentNode;
         SudokuGrid grid;
 
@@ -161,11 +162,11 @@ namespace Prac2
         //if there is no next value then return false
         public bool fillInNextValueFromDomain()
         {
-            for(int i = currentVakje.val; i < 9; i++)
+            for (int i = currentVakje.val; i < 9; i++)
             {
                 if (currentVakje.domain[i])
                 {
-                    currentVakje.val = (i+1);
+                    currentVakje.val = (i + 1);
                     return true;
                 }
             }
@@ -185,6 +186,7 @@ namespace Prac2
         //goes on node up, but does not fill in any value
         public void goToParentState()
         {
+            //Console.WriteLine(grid.ToString());
             currentNode = currentNode.getParent();
 
             currentNode.deleteChild();
@@ -217,27 +219,14 @@ namespace Prac2
                 for (int i = 0; i < 20; i++)
                 {
                     Vakje tempVakje = RCS[i];
-
+                    //Console.WriteLine(grid.ToString());
                     //put the value back to the domain of the other empty Vj's
-                    if (!tempVakje.domain[currentVakje.val - 1] && tempVakje.val == 0)
+                    if (!tempVakje.domain[currentVakje.val - 1] && tempVakje.modifiedBy[currentVakje.val - 1] == currentVakje.coordinates && tempVakje.val == 0)
                     {
-                        //if the any of the vakjes in the column, row and subgrid of tempVakje contains the currentVakje.val
-                        //then we cant add back that value back to its domain
-                        Vakje[] RCS2 = grid.getRCS(tempVakje);
-                        bool isCausedByCurrentVakje = true;
-                        for(int j = 0; j < 20; j++)
-                        {
-                            if (RCS2[j].val == currentVakje.val && RCS2[j] != currentVakje)
-                            {
-                                isCausedByCurrentVakje = false;
-                                break;
-                            }
-                        }
-                        if (isCausedByCurrentVakje)
-                        {
-                            tempVakje.domain[currentVakje.val - 1] = true;
-                            tempVakje.domainSize++;
-                        }
+                        
+                        tempVakje.modifiedBy[currentVakje.val - 1] = (-1, -1);
+                        tempVakje.domain[currentVakje.val - 1] = true;
+                        tempVakje.domainSize++;
                     }
                 }
             }
@@ -254,10 +243,12 @@ namespace Prac2
                 for (int i = 0; i < 20; i++)
                 {
                     Vakje tempVakje = RCS[i];
+                    //Console.WriteLine(grid.ToString());
                     //remove value of current vakje from the domain of the other vakje if its empty 
                     if (tempVakje.domain[currentVakje.val - 1] && tempVakje.val == 0)
                     {
                         
+                        tempVakje.modifiedBy[currentVakje.val - 1] = currentVakje.coordinates;
                         tempVakje.domain[currentVakje.val - 1] = false;
                         tempVakje.domainSize--;
                         //if this leads to an empty domain tell this to the invoker of this function
@@ -280,46 +271,29 @@ namespace Prac2
 
         //finds empty vakje with smallest domain(most constrained vakje)
         //returns null if it cant find an empty cell
+        //expensive
         private Vakje? getSmallestDomain()
         {
             //start with any empty vakje in grid
-            Vakje smallestDomain = findEmptyCell();
+            Vakje vakjeWithSmallestDomain = null;
+            int smallestDomain = 9;
 
-            if(smallestDomain != null)
+            for (int i = 0; i < 9; i++)
             {
-                for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
                 {
-                    for (int j = 0; j < 9; j++)
+                    if(vakjeWithSmallestDomain == null && grid.grid[i][j].val == 0)
                     {
-                        //if we find a vakje with a smaller domain and empty
-                        if(smallestDomain.domainSize < grid.grid[i][j].domainSize && grid.grid[i][j].val == 0)
-                        {
-                            smallestDomain = grid.grid[i][j];
-                        }
+                        vakjeWithSmallestDomain = grid.grid[i][j];
                     }
-                }
-                return smallestDomain;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        //returns the first empty cell from top to bottom left to right
-        private Vakje? findEmptyCell()
-        {
-            for(int i = 0; i < 9; i++)
-            {
-                for(int j=0; j < 9; j++)
-                {
-                    if (grid.grid[i][j].val == 0)
+                    //if we find a vakje with a smaller domain and empty
+                    else if (vakjeWithSmallestDomain != null && vakjeWithSmallestDomain.domainSize >= grid.grid[i][j].domainSize && grid.grid[i][j].val == 0)
                     {
-                        return grid.grid[i][j];
+                        vakjeWithSmallestDomain = grid.grid[i][j];
                     }
                 }
             }
-            return null;
+            return vakjeWithSmallestDomain;
         }
 
         //for each fixed cell Vi remove Value(Vi) from Domain(Vj) With Vj = any square thats affected by Vi's value
@@ -331,7 +305,7 @@ namespace Prac2
                 for(int j = 0; j < 9; j++)
                 {
                     //if square Vi is fixed
-                    if (grid.grid[i][j].fixed_)
+                    if (grid.grid[i][j].val != 0)
                     {
                         //update the domains of all Vj's
                         Vakje[] Vjs = grid.getRCS(grid.grid[i][j]);
@@ -339,6 +313,7 @@ namespace Prac2
                         {
                             if (Vjs[k].domain[grid.grid[i][j].val - 1])
                             {
+                                Vjs[k].modifiedBy[grid.grid[i][j].val - 1] = (i, j);
                                 Vjs[k].domain[grid.grid[i][j].val - 1] = false;
                                 Vjs[k].domainSize--;
                             }
