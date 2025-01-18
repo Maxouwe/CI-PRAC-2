@@ -143,6 +143,7 @@ namespace Prac2
         }
 
         //get a square with the smallest domain
+        //this cant return a square with an empty domain because the algorithm prevents empty domains in the first place
         public bool setInitialState()
         {
             currentVakje = getSmallestDomain();
@@ -173,20 +174,14 @@ namespace Prac2
             return false;
         }
         
-        //consider the latest value x that was added to the grid
-        //add x back to all domains
-        //and remove x from the cell
         public void emptySquare()
         {
-            
             currentVakje.val = 0;
         }
-
 
         //goes on node up, but does not fill in any value
         public void goToParentState()
         {
-            //Console.WriteLine(grid.ToString());
             currentNode = currentNode.getParent();
 
             currentNode.deleteChild();
@@ -210,21 +205,27 @@ namespace Prac2
             return false;
         }
 
-        public void addBackToDomains()
+        //reverts all domains to its previous state
+        public void rollbackDomains()
         {
+            //make sure we dont try to add back value = 0
             if(currentVakje.val != 0)
             {
+                //get all squares in the same row,column and subgrid as currentVakje
                 Vakje[] RCS = grid.getRCS(currentVakje);
 
                 for (int i = 0; i < 20; i++)
                 {
                     Vakje tempVakje = RCS[i];
-                    //Console.WriteLine(grid.ToString());
-                    //put the value back to the domain of the other empty Vj's
+
+                    //if (the domain doesnt contain currentValue &&
+                    //that value has been removed because of currentVakje &&
+                    //tempVakje is an empty square)
                     if (!tempVakje.domain[currentVakje.val - 1] && tempVakje.modifiedBy[currentVakje.val - 1] == currentVakje.coordinates && tempVakje.val == 0)
-                    {
-                        
+                    {   
+                        //forget which vakje had removed the currentvalue from its domain
                         tempVakje.modifiedBy[currentVakje.val - 1] = (-1, -1);
+                        //put it back in its domain
                         tempVakje.domain[currentVakje.val - 1] = true;
                         tempVakje.domainSize++;
                     }
@@ -243,14 +244,16 @@ namespace Prac2
                 for (int i = 0; i < 20; i++)
                 {
                     Vakje tempVakje = RCS[i];
-                    //Console.WriteLine(grid.ToString());
+                    
                     //remove value of current vakje from the domain of the other vakje if its empty 
                     if (tempVakje.domain[currentVakje.val - 1] && tempVakje.val == 0)
                     {
-                        
+                        //remember that currentVakje has removed this value from its domain
                         tempVakje.modifiedBy[currentVakje.val - 1] = currentVakje.coordinates;
+                        //removed it from its domain
                         tempVakje.domain[currentVakje.val - 1] = false;
                         tempVakje.domainSize--;
+
                         //if this leads to an empty domain tell this to the invoker of this function
                         //so we can backtrack
                         if (tempVakje.domainSize == 0)
@@ -263,15 +266,8 @@ namespace Prac2
             return true;
         }
 
-        //the sorting may be optimized more
-        //instead of counting every domain size every step
-        //we can remember which domains have been changed last and what the size was of them
-        //we can just remember that we just need to increase or decrease their size by 1
-        //(because every step at most only 1 value is added or removed from every domain
-
         //finds empty vakje with smallest domain(most constrained vakje)
         //returns null if it cant find an empty cell
-        //expensive
         private Vakje? getSmallestDomain()
         {
             //start with any empty vakje in grid

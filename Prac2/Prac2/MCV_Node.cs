@@ -8,7 +8,8 @@ namespace Prac2
 {
     //nodes for the search tree
     //we dont need to remember siblings(so its not really a tree just a linked list)
-    //because a sibling is the same vakje but trying out the next value of its domain 
+    //because a sibling is the same vakje but trying out the next value of its domain
+    //so we dont need to remember the coordinates again
     internal class MCV_Node
     {
         //the coordinates of the vakje that we filled in

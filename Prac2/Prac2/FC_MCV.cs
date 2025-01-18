@@ -24,26 +24,19 @@ namespace Prac2
 
             //this means finding an empty square with the smallest domain and make this the first node of the search tree
             op.setInitialState();
-
-
+            
+            //this variable is used in loopAlgorithm()
             goToChild = false;
-            recurseAlgorithm();
-            if (!checkVakjes())
-            {
-                Console.WriteLine("foutje");
-            }
+
+            loopAlgorithm();
         }
 
         //the recursive part of the algorithm
-        private void recurseAlgorithm()
+        private void loopAlgorithm()
         {
-            //Console.WriteLine("Vakje {0} = {1}", op.currentVakje.coordinates, op.currentVakje.val);
-            //Console.WriteLine("CurrentNode coordinates {0} {1}", op.currentNode.coordinates.Item1, op.currentNode.coordinates.Item2);
-            //Console.WriteLine(grid.ToString());
             bool solved = false;
             while(!solved)
             {
-                
                 if (goToChild)
                 {
                     //go to the next square with the smallest domain
@@ -51,11 +44,12 @@ namespace Prac2
                     {
                         tryOutNextValueFromDomain();
                     }
+                    //if there is no next square that means we are done
                     else
                     {
                         solved = true;
                     }
-                    //if there is no next square that means we are done
+                    
                 }
                 //stay in the same square but try out the next value 
                 else
@@ -69,51 +63,44 @@ namespace Prac2
         //for the current square we try out the next value in its domain
         private void tryOutNextValueFromDomain()
         {
-            //if there are values left in the domain
+            //if there are values left in its domain (if current node has more siblings to try out)
             if (op.fillInNextValueFromDomain())
             {
+                //we try to remove the value from the domains, if it succeeds we go to the next empty square
                 if (op.removeFromDomains())
                 {
                     goToChild = true;
-                    
                 }
+                //if the removing leads to an empty domain we rollback the domains one step back
+                //and we try out the next value in the domain
                 else
                 {
-                    recoverAndTryNextValue();
+                    op.rollbackDomains();
+                    goToChild = false;
                 }
             }
+            //if there are no values left in its domain (no siblings left for the current node)
             else
             {
-                recoverAndGoToParent();
+                //recover the domains and empty the current square
+                op.rollbackDomains();
+                op.emptySquare();
+
+                //go to the previous square
+                op.goToParentState();
+
+                //we need to rollback the domains here because
+                //we know we are going to try out the next value
+                op.rollbackDomains();
+
+                goToChild = false;
             }
         }
 
-        //the value of the current square is added back to the domains of the Vj's
-        //then we empty the square
-        //and go to the square we filled in before this one
-        //then try out its sibling (by invoking recurseAlgorithm(false))
 
-        private void recoverAndGoToParent()
-        {
-            op.addBackToDomains();
-            op.emptySquare();
-            
-            op.goToParentState();
-            recoverAndTryNextValue();
-            checkDomains();
-            checkDomains2();
+        //all the next functions are just some test functions
 
-            goToChild = false;
-            
-        }
-
-        private void recoverAndTryNextValue()
-        {
-            op.addBackToDomains();
-            goToChild = false;
-            
-        }
-
+        //returns false if there exists a domain that contains a value that it shouldnt contain
         private bool checkDomains()
         {
             for(int i = 0; i < 9; i++)
@@ -128,7 +115,7 @@ namespace Prac2
             }
             return true;
         }
-
+        //helper for checkDomains
         private bool checkDomain(Vakje vakje)
         {
             if(vakje.val != 0)
@@ -164,6 +151,7 @@ namespace Prac2
             return true;
         }
 
+        //returns false if there exists a domain that wrongly rules out a value
         private bool checkDomains2()
         {
             for (int i = 0; i < 9; i++)

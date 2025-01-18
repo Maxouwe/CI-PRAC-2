@@ -15,7 +15,9 @@ namespace Prac2
         public bool[] domain;
         //so we remember by which vakje which domain element was removed
         public (int, int)[] modifiedBy;
+
         public int domainSize;
+
         //(row index, column index)
         public readonly (int, int) coordinates;
 
