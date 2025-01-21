@@ -31,9 +31,13 @@ namespace Prac2
     internal class StateOperatorCB
     {
         Vakje currentVakje;
-        SudokuGrid sg;
+        public SudokuGrid sg;
 
-        public StateOperatorCB() { }
+        public StateOperatorCB(SudokuGrid sg) 
+        {
+            this.sg = sg;
+            currentVakje = sg.grid[0][0];
+        }
 
 
         //checks wether the next value for currentVakje does not violate any constraints
@@ -44,18 +48,13 @@ namespace Prac2
         public bool checkNextSibling()
         {
             currentVakje.val++;
-            Vakje[] vs = sg.getRCS(currentVakje);
-            foreach (Vakje v in vs)
-            {
-                if (currentVakje.val = v.val) return false;
-            }
-            return true;
+            return check(currentVakje);
         }
 
         //go to the next sibling of the current state
         //make sure to first call undoOperator()
         //-fill in the next value for Vi
-        public void goToNextSibling(int n)
+        public void goToNextSibling(int n) //not necessary
         {
             undoOperator();
             currentVakje.val += n;
@@ -88,22 +87,51 @@ namespace Prac2
             currentVakje = sg.grid[childCoords.Item1][childCoords.Item2];
         }
 
-        private void previousVakje((int,int) xy)
+        //check if the value of the given vakje is correct
+        private bool check(Vakje cv)
         {
-            //if previous x is still bigger than zero, return that with the same y value, otherwise 9 and the previous y
-            int x = xy.Item1 - 1 != 0 ? xy.Item1 - 1 : 9;
-            int y = xy.Item1 - 1 != 0 ? xy.Item2 : xy.Item2 - 1;
+            Vakje[] vs = sg.getRCS(cv);
+            foreach (Vakje v in vs)
+            {
+                if (cv.val == v.val) return false;
+            }
+            return true;
+        }
+
+        //check if the current grid is a correct solution
+        public bool checkCompleted()
+        {
+            if (currentVakje.coordinates == (8,8))
+            {
+                for (int i = 0; i < 9; i++)
+                    for (int j = 0; j < 9; j++)
+                        if (!check(sg.grid[i][j]))
+                            return false;
+                return true;
+            }
+            return false;
+        }
+
+        //get coordinates of the previous vakje
+        private (int, int) previousVakje((int,int) xy)
+        {
+            //if previous x is still bigger than zero, return that with the same y value, otherwise 8 and the previous y
+            int x = xy.Item1 != 0 ? xy.Item1 - 1 : 8;
+            int y = xy.Item1 != 0 ? xy.Item2 : xy.Item2 - 1;
+            //if the previous vakje is fixed, go one further
             if (!sg.grid[x][y].fixed_)
                 return (x, y);
             else
                 return previousVakje((x, y));
         }
 
-        private void nextVakje((int, int) xy)
+        //get the coordinates of the next vakje
+        private (int,int) nextVakje((int, int) xy)
         {
-            //if previous x is still bigger than zero, return that with the same y value, otherwise 9 and the previous y
-            int x = xy.Item1 + 1 != 10 ? xy.Item1 + 1 : 1;
-            int y = xy.Item1 + 1 != 10 ? xy.Item2 : xy.Item2 + 1;
+            //if previous x is still smaller than nine, return that with the same y value, otherwise 0 and the next y
+            int x = xy.Item1 != 8 ? xy.Item1 + 1 : 0;
+            int y = xy.Item1 != 8 ? xy.Item2 : xy.Item2 + 1;
+            //if the next vakje is fixed, go one further
             if (!sg.grid[x][y].fixed_)
                 return (x, y);
             else

@@ -1,0 +1,15 @@
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.csproj.AssemblyReference.cache
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.AssemblyInfoInputs.cache
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.AssemblyInfo.cs
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.csproj.CoreCompileInputs.cache
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\bin\Debug\net6.0\Prac2.exe
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\bin\Debug\net6.0\Prac2.deps.json
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\bin\Debug\net6.0\Prac2.runtimeconfig.json
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\bin\Debug\net6.0\Prac2.dll
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\bin\Debug\net6.0\Prac2.pdb
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.dll
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\refint\Prac2.dll
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.pdb
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\Prac2.genruntimeconfig.cache
+C:\Users\dinan\OneDrive\Documenten\Studie\Jaar 3\CI\Prac2\CI-PRAC-2\Prac2\Prac2\obj\Debug\net6.0\ref\Prac2.dll
