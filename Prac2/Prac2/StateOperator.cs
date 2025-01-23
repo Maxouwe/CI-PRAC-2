@@ -32,11 +32,13 @@ namespace Prac2
     {
         Vakje currentVakje;
         public SudokuGrid sg;
+        (int, int) lastVakje;
 
         public StateOperatorCB(SudokuGrid sg) 
         {
             this.sg = sg;
             currentVakje = sg.grid[0][0];
+            lastVakje = findLastNonFixedVakje();
         }
 
 
@@ -101,7 +103,7 @@ namespace Prac2
         //check if the current grid is a correct solution
         public bool checkCompleted()
         {
-            if (currentVakje.coordinates == (8,8))
+            if (currentVakje.coordinates == lastVakje)
             {
                 for (int i = 0; i < 9; i++)
                     for (int j = 0; j < 9; j++)
@@ -121,8 +123,8 @@ namespace Prac2
             //if the previous vakje is fixed, go one further
             if (!sg.grid[x][y].fixed_)
                 return (x, y);
-            else
-                return previousVakje((x, y));
+            else if(x == 0 && y == 0) return (0,1);
+                else return previousVakje((x, y));
         }
 
         //get the coordinates of the next vakje
@@ -134,8 +136,16 @@ namespace Prac2
             //if the next vakje is fixed, go one further
             if (!sg.grid[x][y].fixed_)
                 return (x, y);
-            else
-                return nextVakje((x, y));
+            else if (x == 8 && y == 8)  return (8,7);
+                else return nextVakje((x, y));
+        }
+        //find at which vakje we are finished
+        private (int,int) findLastNonFixedVakje()
+        {
+            for (int i = 8; i > 0; i--)
+                for (int j = 8; j > 0; j--)
+                    if (!sg.grid[j][i].fixed_) return (j, i);
+            return (0,0);
         }
     }
 

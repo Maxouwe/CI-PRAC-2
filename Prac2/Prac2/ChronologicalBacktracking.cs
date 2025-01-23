@@ -18,6 +18,7 @@ namespace Prac2
         //initiate the recursion for the Chronological Backtracking Algorithm
         public void runAlgorithm()
         {
+            if (socb.sg.grid[0][0].fixed_) socb.goToFirstChild();
             findNextSib();
         }
 
