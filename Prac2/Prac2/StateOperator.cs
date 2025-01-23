@@ -127,13 +127,22 @@ namespace Prac2
         }
 
         // Go up one node, but do not fill in value
-        public void goToParentState()
+        public bool goToParentState()
         {
-            currentNode = currentNode.getParent();
+            if (currentNode.getParent() == null)
+            {
+                return false;
+            }
+            else
+            {
+                currentNode = currentNode.getParent();
 
-            currentNode.deleteChild();
+                currentNode.deleteChild();
 
-            currentVakje = grid.grid[currentNode.coordinates.Item1][currentNode.coordinates.Item2];
+                currentVakje = grid.grid[currentNode.coordinates.Item1][currentNode.coordinates.Item2];
+                return true;
+            }
+
         }
 
         // Find next empty vakje, but do not fill in value
@@ -334,13 +343,22 @@ namespace Prac2
         }
 
         //goes on node up, but does not fill in any value
-        public void goToParentState()
+        public bool goToParentState()
         {
-            currentNode = currentNode.getParent();
+            if(currentNode.getParent() == null)
+            {                
+                return false;
+            }
+            else
+            {
+                currentNode = currentNode.getParent();
 
-            currentNode.deleteChild();
+                currentNode.deleteChild();
 
-            currentVakje = grid.grid[currentNode.coordinates.Item1][currentNode.coordinates.Item2];
+                currentVakje = grid.grid[currentNode.coordinates.Item1][currentNode.coordinates.Item2];
+                return true;
+            }
+
         }
 
         //goes to the square with the smallest domain but does not fill in any value yet
@@ -426,18 +444,17 @@ namespace Prac2
         {
             //start with any empty vakje in grid
             Vakje vakjeWithSmallestDomain = null;
-            int smallestDomain = 9;
-
+           
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if(vakjeWithSmallestDomain == null && grid.grid[i][j].val == 0)
+                    if(vakjeWithSmallestDomain == null && grid.grid[i][j].val == 0 && grid.grid[i][j].domainSize != 0)
                     {
                         vakjeWithSmallestDomain = grid.grid[i][j];
                     }
                     //if we find a vakje with a smaller domain and empty
-                    else if (vakjeWithSmallestDomain != null && vakjeWithSmallestDomain.domainSize >= grid.grid[i][j].domainSize && grid.grid[i][j].val == 0)
+                    else if (vakjeWithSmallestDomain != null && vakjeWithSmallestDomain.domainSize > grid.grid[i][j].domainSize && grid.grid[i][j].val == 0 && grid.grid[i][j].domainSize != 0)
                     {
                         vakjeWithSmallestDomain = grid.grid[i][j];
                     }

@@ -18,7 +18,7 @@ namespace Prac2
             op = new StateOperatorFC(grid);
         }
 
-        public void executeAlgorithm()
+        public bool executeAlgorithm()
         {
             op.makeNodeConsistent();
 
@@ -28,11 +28,15 @@ namespace Prac2
             //this variable is used in loopAlgorithm()
             goToChild = false;
 
-            loopAlgorithm();
+            if (!loopAlgorithm())
+            {
+                return false;
+            }
+            return true;
         }
 
         //the recursive part of the algorithm
-        private void loopAlgorithm()
+        private bool loopAlgorithm()
         {
             bool solved = false;
             while(!solved)
@@ -42,7 +46,10 @@ namespace Prac2
                     //go to the next empty square
                     if (op.goToChildState())
                     {
-                        tryOutNextValueFromDomain();
+                        if (!tryOutNextValueFromDomain())
+                        {
+                            return false;
+                        }
                     }
                     //if there is no next square that means we are done
                     else
@@ -54,14 +61,18 @@ namespace Prac2
                 //stay in the same square but try out the next value 
                 else
                 {
-                    tryOutNextValueFromDomain();
+                    if (!tryOutNextValueFromDomain())
+                    {
+                        return false;
+                    }
                 }
             }
+            return true;
             
         }
 
         //for the current square we try out the next value in its domain
-        private void tryOutNextValueFromDomain()
+        private bool tryOutNextValueFromDomain()
         {
             //if there are values left in its domain (if current node has more siblings to try out)
             if (op.fillInNextValueFromDomain())
@@ -87,7 +98,10 @@ namespace Prac2
                 op.emptySquare();
 
                 //go to the previous square
-                op.goToParentState();
+                if (!op.goToParentState())
+                {
+                    return false;
+                }
 
                 //we need to rollback the domains here because
                 //we know we are going to try out the next value
@@ -95,6 +109,7 @@ namespace Prac2
 
                 goToChild = false;
             }
+            return true;
         }
     }
 }

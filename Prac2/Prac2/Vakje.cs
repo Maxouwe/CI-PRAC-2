@@ -8,7 +8,7 @@ namespace Prac2
 {
     internal class Vakje
     {
-        public readonly bool fixed_;
+        public bool fixed_;
         public int val;
 
         //if bool[i] = true then i + 1 is in the domain
