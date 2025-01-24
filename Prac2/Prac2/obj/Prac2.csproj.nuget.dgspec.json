@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dinan\\OneDrive\\Documenten\\Studie\\Jaar 3\\CI\\Prac2\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj": {}
+    "C:\\Users\\m_ver\\Desktop\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dinan\\OneDrive\\Documenten\\Studie\\Jaar 3\\CI\\Prac2\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj": {
+    "C:\\Users\\m_ver\\Desktop\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dinan\\OneDrive\\Documenten\\Studie\\Jaar 3\\CI\\Prac2\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj",
+        "projectUniqueName": "C:\\Users\\m_ver\\Desktop\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj",
         "projectName": "Prac2",
-        "projectPath": "C:\\Users\\dinan\\OneDrive\\Documenten\\Studie\\Jaar 3\\CI\\Prac2\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj",
-        "packagesPath": "C:\\Users\\dinan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dinan\\OneDrive\\Documenten\\Studie\\Jaar 3\\CI\\Prac2\\CI-PRAC-2\\Prac2\\Prac2\\obj\\",
+        "projectPath": "C:\\Users\\m_ver\\Desktop\\CI-PRAC-2\\Prac2\\Prac2\\Prac2.csproj",
+        "packagesPath": "C:\\Users\\m_ver\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\m_ver\\Desktop\\CI-PRAC-2\\Prac2\\Prac2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dinan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\m_ver\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
