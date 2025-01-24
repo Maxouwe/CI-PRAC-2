@@ -7,12 +7,12 @@
 
             //inputMode();
 
-            //runExperiments();
-            while (true)
-            {
-                Experiments.runCBOnce(30);
-                Console.ReadLine();
-            }
+            runExperiments();
+
+            
+            
+            
+
         }
 
         //Experiments.testAlg(m, n)
@@ -22,14 +22,16 @@
         //we did not enough time to figure out to ensure a generated grid is solvable
         static void runExperiments()
         {
-            int n = 1000;
+            int n = 50;
             for (int j = 0; j < 10; j++)
             {
                 int m = 25 + j;
+                (float, int) CBTEST = Experiments.testCB(m, n);
                 (float, int) FCTEST = Experiments.testFC(m, n);
                 (float, int) FC_MCVTEST = Experiments.testFC_MCV(m, n);
-                Console.WriteLine("FC, {1} fixed cells, 100 runs, took {0} ms on average, {2} fails", FCTEST.Item1, m, FCTEST.Item2);
-                Console.WriteLine("FC_MCV, {1} fixed cells, 100 runs, took {0} ms on average, {2} fails", FC_MCVTEST.Item1, m, FC_MCVTEST.Item2);
+                Console.WriteLine("CB, {1} fixed cells, {3} runs, took {0} ms on average, {2} fails", CBTEST.Item1, m, CBTEST.Item2, n);
+                Console.WriteLine("FC, {1} fixed cells, {3} runs, took {0} ms on average, {2} fails", FCTEST.Item1, m, FCTEST.Item2, n);
+                Console.WriteLine("FC_MCV, {1} fixed cells, {3} runs, took {0} ms on average, {2} fails", FC_MCVTEST.Item1, m, FC_MCVTEST.Item2, n);
             }
         }
 

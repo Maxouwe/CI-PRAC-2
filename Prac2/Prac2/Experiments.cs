@@ -30,6 +30,7 @@ namespace Prac2
 
             if (!algoObject.executeAlgorithm())
             {
+                sw.Stop();
                 return (0, false);
             }
 
@@ -77,6 +78,7 @@ namespace Prac2
 
             if (!algoObject.executeAlgorithm())
             {
+                sw.Stop();
                 return (0, false);
             }
 
@@ -113,22 +115,23 @@ namespace Prac2
 
             //if the generator gets stuck on generating a certain grid for longer
             //than restartTime then restart and try generating a new grid
-            int restartTime = 1000;
+            int restartTime = 10;
             grid = SudokuGenerator.generate(fixedCells, restartTime);
 
             Stopwatch sw = new Stopwatch();
 
             ChronologicalBacktracking algoObject = new ChronologicalBacktracking(grid);
 
-            Console.WriteLine(grid.ToString());
+            
             sw.Start();
             
             if (!algoObject.runAlgorithm())
             {
+                sw.Stop();
                 return (0, false);
             }
 
-            Console.WriteLine(algoObject.printResult());
+            
             sw.Stop();
             return (sw.ElapsedMilliseconds, true);
         }
