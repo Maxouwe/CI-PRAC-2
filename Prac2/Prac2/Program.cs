@@ -7,8 +7,12 @@
 
             //inputMode();
 
-            runExperiments();
-            
+            //runExperiments();
+            while (true)
+            {
+                Experiments.runCBOnce(30);
+                Console.ReadLine();
+            }
         }
 
         //Experiments.testAlg(m, n)

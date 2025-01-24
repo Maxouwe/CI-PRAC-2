@@ -107,6 +107,54 @@ namespace Prac2
             return (timeSum / (float)amountOfRuns, amountOfFails);
         }
 
+        static public (long, bool) runCBOnce(int fixedCells)
+        {
+            SudokuGrid grid;
+
+            //if the generator gets stuck on generating a certain grid for longer
+            //than restartTime then restart and try generating a new grid
+            int restartTime = 1000;
+            grid = SudokuGenerator.generate(fixedCells, restartTime);
+
+            Stopwatch sw = new Stopwatch();
+
+            ChronologicalBacktracking algoObject = new ChronologicalBacktracking(grid);
+
+            Console.WriteLine(grid.ToString());
+            sw.Start();
+            
+            if (!algoObject.runAlgorithm())
+            {
+                return (0, false);
+            }
+
+            Console.WriteLine(algoObject.printResult());
+            sw.Stop();
+            return (sw.ElapsedMilliseconds, true);
+        }
+
+        //returns average run time over amountOfRuns runs
+        static public (float, int) testCB(int fixedCells, int amountOfRuns)
+        {
+            long timeSum = 0;
+            int n = amountOfRuns;
+            int amountOfFails = 0;
+            (long, bool) timeOnce = runCBOnce(fixedCells);
+            while (n > 0)
+            {
+                if (timeOnce.Item2)
+                {
+                    timeSum += timeOnce.Item1;
+                    n--;
+                }
+                else
+                {
+                    amountOfFails++;
+                }
+                timeOnce = runCBOnce(fixedCells);
+            }
+            return (timeSum / (float)amountOfRuns, amountOfFails);
+        }
         static public bool checkVakjes(SudokuGrid grid)
         {
             for (int i = 0; i < 9; i++)
