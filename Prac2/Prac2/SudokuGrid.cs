@@ -48,6 +48,19 @@ namespace Prac2
             }
         }
 
+        //initialises an empty grid(used for sudokugenerator
+        public void initEmpty()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+
+
+                    grid[i][j] = new Vakje(false, 0, (i, j));
+                }
+            }
+        }
         public string ToString()
         {
             List<string> vertLine = new List<string> { "", "-", "-", "-", "+", "-", "-", "-", "+", "-", "-", "-", "+", "\n" };
