@@ -7,9 +7,6 @@
             SudokuGrid sud = new SudokuGrid();
             sud.ParseFromString(Console.ReadLine());
             Console.WriteLine(sud.ToString());
-            ChronologicalBacktracking cb = new ChronologicalBacktracking(sud);
-            Console.WriteLine(cb.runAlgorithm());
-            Console.WriteLine(cb.printResult());
         }
 
 
